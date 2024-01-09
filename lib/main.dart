@@ -1,10 +1,19 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_1/firebase_options.dart';
+import 'package:flutter_1/firestore_example/firestore_example.dart';
+import 'package:flutter_1/form/form_screen.dart';
 import 'route/route_generator.dart';
 import 'splash/splash_screen.dart';
 import 'dashboard/dashboard.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(MyApp());
 }
 
@@ -15,9 +24,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(appBarTheme: const AppBarTheme(color: Colors.lightBlueAccent)),
+      theme: ThemeData(
+          appBarTheme: const AppBarTheme(color: Colors.lightBlueAccent)),
       // home: DashBoard()
-      initialRoute: SplashScreen.routeName,
+      initialRoute: FireStoreExample.routeName,
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
@@ -66,8 +76,7 @@ class _TestScreenState extends State<TestScreen> {
                           color: Colors.pinkAccent,
                           borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(50),
-                              bottomRight: Radius.circular(50)
-                          )),
+                              bottomRight: Radius.circular(50))),
                     ),
                     const Positioned(
                       height: 80,

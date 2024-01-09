@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_1/firestore_example/firestore_example.dart';
+import 'package:flutter_1/form/form_screen.dart';
 import 'package:flutter_1/registration/registration_screen.dart';
 import 'package:flutter_1/splash/splash_screen.dart';
 import 'package:flutter_1/login/login_screen.dart';
+import 'package:flutter_1/form/form_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
@@ -16,6 +19,12 @@ class RouteGenerator {
 
       case RegistrationScreen.routeName:
         return MaterialPageRoute(builder: (_) => const RegistrationScreen());
+
+      case FormScreen.routeName:
+        return MaterialPageRoute(builder: (_) => const FormScreen());
+
+      case FireStoreExample.routeName:
+        return MaterialPageRoute(builder: (_) => const FireStoreExample());
 
 
 

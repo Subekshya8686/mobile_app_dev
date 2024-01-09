@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_1/main.dart';
 import 'package:flutter_1/registration/registration_screen.dart';
@@ -15,6 +16,9 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool visibility = true;
+  bool loading = false;
+  FirebaseAuth auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,20 +118,68 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 controller: _passwordController,
               ),
-              SizedBox(height: 10,),
-              ElevatedButton(
-                  onPressed: () {
-                    print(_emailController.text);
-                  },
-                  child: Text("Submit")),
-              SizedBox(height: 10,),
-              Align(
-                alignment: Alignment.centerRight,
-                child: InkWell(
-                    onTap: (){
-                      Navigator.pushNamed(context, RegistrationScreen()),
-                    },
-                    child: Text("Register Now"))),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                width: 500,
+                child: ElevatedButton(
+                  onPressed: () async{
+                    auth.signInWithEmailAndPassword(
+                        email: _emailController.text,
+                        password: _passwordController.text);
+                  },child: Text("Login"),
+                ),
+              ),
+              Container(
+                width: 500,
+                child:
+                loading == true ? CircularProgressIndicator(
+                  strokeWidth: 4.0,
+                ):
+                ElevatedButton(
+                    onPressed: () async {
+                      setState(() {
+                        loading = true;
+                      });
+                      try {
+                        final user = await auth.createUserWithEmailAndPassword(
+                            email: _emailController.text,
+                            password: _passwordController.text);
+
+                        if (user.user != null){
+                          setState(() {
+                            loading = false;
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Registered Successfully")),
+                          );
+                        }
+                      } on Exception catch (e) {
+                        setState(() {
+                          loading = false;
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(e.toString()))
+                        );
+                        // TODO
+                      }
+                    },child: Text("Register"),
+              ),
+              // SizedBox(
+              //   height: 10,
+              // ),
+              // Container(
+                // child: Align(
+                //     alignment: Alignment.centerRight,
+                //     child: InkWell(
+                //                         onTap: () {
+                //                           Navigator.pushNamed(
+                //                               context, RegistrationScreen.routeName);
+                //                         },
+                //                     child: Text("Register")),,
+                //         child: Text("Register Now"))),
+              ),
             ],
           ),
         ),
