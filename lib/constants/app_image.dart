@@ -1,0 +1,1 @@
+const String pngCamera = "assets/images/camera.png";

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_1/firebase_options.dart';
 import 'package:flutter_1/firestore_example/firestore_example.dart';
 import 'package:flutter_1/form/form_screen.dart';
+import 'package:flutter_1/providers/user_view_model.dart';
+import 'package:provider/provider.dart';
 import 'route/route_generator.dart';
 import 'splash/splash_screen.dart';
 import 'dashboard/dashboard.dart';
@@ -22,13 +24,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          appBarTheme: const AppBarTheme(color: Colors.lightBlueAccent)),
-      // home: DashBoard()
-      initialRoute: FireStoreExample.routeName,
-      onGenerateRoute: RouteGenerator.generateRoute,
+    return MultiProvider(
+        providers: [
+      ChangeNotifierProvider(create: (_)=>UserViewModel()),
+    ],
+        child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+            appBarTheme: const AppBarTheme(color: Colors.lightBlueAccent)),
+        // home: DashBoard()
+        initialRoute: FireStoreExample.routeName,
+        onGenerateRoute: RouteGenerator.generateRoute,
+      )
     );
   }
 }
